@@ -1,0 +1,22 @@
+{
+  "name": "demoblazeplaywright",
+  "version": "1.0.0",
+  "description": "automation tests for demoblaze",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kdurdevic/demoblazePlaywright.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kdurdevic/demoblazePlaywright/issues"
+  },
+  "homepage": "https://github.com/kdurdevic/demoblazePlaywright#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.51.1",
+    "@types/node": "^22.13.13"
+  }
+}
