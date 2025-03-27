@@ -22,3 +22,30 @@ test('Successful login', async ({ page }) => {
     //then
     await loginPage.assertLoginIsSuccessful();
 });
+
+test('Login with nonexisting user', async ({ page }) => {
+    const loginPage = new LoginPage(page);
+
+    // given
+    await loginPage.assertLoginModalHasOpened();
+
+    // when
+    await loginPage.loginWithNonExistingUser();
+
+    // then
+    await loginPage.assertDialogForNonExistingUserIsShown('User does not exist.');
+});
+
+test('Login with wrong password', async ({ page }) => {
+    const loginPage = new LoginPage(page);
+
+    // given
+    await loginPage.assertLoginModalHasOpened();
+
+    // when
+    await loginPage.loginWithWrongPassword();
+
+    // then
+    await loginPage.assertDialogForNonExistingUserIsShown('Wrong password.');
+});
+

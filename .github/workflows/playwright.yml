@@ -24,6 +24,8 @@ jobs:
       env:
           VALID_USERNAME: ${{ secrets.VALID_USERNAME }}
           VALID_PASSWORD: ${{ secrets.VALID_PASSWORD }}
+          INVALID_USERNAME: ${{ secrets.INVALID_USERNAME }}
+          INVALID_PASSWORD: ${{ secrets.INVALID_PASSWORD }}
       run: npx playwright test
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
