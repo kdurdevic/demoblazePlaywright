@@ -28,8 +28,8 @@ export default defineConfig({
     /* Base URL to use in actions like `await page.goto('/')`. */
      baseURL: 'https://www.demoblaze.com/index.html',
      storageState: './playwright/.auth/user.json',
-     actionTimeout: 15000,
-     navigationTimeout: 15000,
+     actionTimeout: 10000,
+     navigationTimeout: 10000,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',

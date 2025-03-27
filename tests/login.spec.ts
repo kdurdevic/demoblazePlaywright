@@ -13,7 +13,12 @@ test.beforeEach(async ({ page }) => {
 test('Successful login', async ({ page }) => {
     const loginPage = new LoginPage(page);
 
+    // given
     await loginPage.assertLoginModalHasOpened();
+
+    //when
     await loginPage.loginWithValidCredentials();
+
+    //then
     await loginPage.assertLoginIsSuccessful();
 });

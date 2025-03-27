@@ -12,9 +12,9 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('logout User', async ({ page }) => {
+    const homePage = new HomePage(page);
 
     //given
-    const homePage = new HomePage(page);
     await homePage.assertUserIsLoggedIn();
 
     //when

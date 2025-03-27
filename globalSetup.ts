@@ -6,11 +6,9 @@ const authFileDir = path.join(__dirname, 'playwright/.auth');
 const authFile = path.join(authFileDir, 'user.json');
 
 async function globalSetup() {
-    // Launch the browser and create a new context and page
     const browser = await chromium.launch();
     const context = await browser.newContext();
     const page = await context.newPage();
-
     const loginPage = new LoginPage(page);
 
     // given
@@ -23,6 +21,7 @@ async function globalSetup() {
 
     // then
     await context.storageState({ path: authFile });
+    await browser.close();
 
 }
 
