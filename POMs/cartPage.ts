@@ -21,15 +21,14 @@ export class CartPage {
     okButton: Locator;
     successMessage: Locator;
 
-
     constructor(page: Page) {
         this.page = page;
         this.homeLink = page.getByRole('link', { name: 'Home (current)' });
         this.cartLink = page.getByRole('link', { name: 'Cart', exact: true });
         this.phoneItem = page.getByRole('cell', { name: 'Sony vaio i5' });
-        this.laptopItem = page.getByRole('cell', { name: 'Apple monitor' });
+        this.laptopItem = page.locator('tr', { hasText: 'Apple monitor' });
         this.monitorItem = page.getByRole('cell', { name: 'Samsung galaxy s6' });
-        this.deleteLink = page.getByRole('row', { name: 'Sony vaio i5 790 Delete' }).getByRole('link');
+        this.deleteLink = this.laptopItem.getByRole('link', { name: 'Delete' });
         this.placeOrderButton = page.getByRole('button', { name: 'Place Order' });
         this.nameField = page.getByRole('textbox', { name: 'Total: Name:' });
         this.countryField = page.getByRole('textbox', { name: 'Country:' });
@@ -88,7 +87,6 @@ export class CartPage {
     public async closeSuccessModal() {
         await this.okButton.click();
     }
-
 }
 
 export default CartPage;
