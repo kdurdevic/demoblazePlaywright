@@ -40,7 +40,7 @@ test.describe.serial('add, delete, order', () => {
         await cartPage.assertCartIsOpened();
 
         // when
-        await cartPage.deleteItemByName('Sony vaio i5');
+        await cartPage.deleteItem('Sony vaio i5');
 
         // then 
         await cartPage.assertItemIsDeletedFromCart('Sony vaio i5');

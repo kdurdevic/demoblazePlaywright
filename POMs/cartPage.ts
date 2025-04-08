@@ -47,7 +47,7 @@ export class CartPage {
         await expect(itemLocator).toHaveCount(0);
     }
 
-    public async deleteItemByName(itemName: string) {
+    public async deleteItem(itemName: string) {
         const deleteLink = this.page.locator(`tr:has-text("${itemName}") >> text=Delete`);
         await deleteLink.click();
     }
