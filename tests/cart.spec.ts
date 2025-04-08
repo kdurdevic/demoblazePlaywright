@@ -1,71 +1,63 @@
 import { test } from '@playwright/test';
-import dotenv from 'dotenv';
 import { HomePage } from '../POMs/homePage';
 import { CartPage } from '../POMs/cartPage';
-import path from 'path';
 import { city, country, creditCard, month, name, year } from '../utils/order_information';
 
-dotenv.config();
-
-test.use({ storageState: path.resolve(__dirname, '../playwright/.auth/user.json') });
+let homePage: HomePage;
+let cartPage: CartPage;
 
 test.beforeEach(async ({ page }) => {
     await page.goto('/');
+    homePage = new HomePage(page);
+    cartPage = new CartPage(page);
 });
 
 test.describe.serial('add, delete, order', () => {
     test('Add items to cart ', async ({ page }) => {
-        const homePage = new HomePage(page);
-        const cartPage = new CartPage(page);
-
-        //given
+        // given
         await homePage.assertUserIsLoggedIn();
 
-        //when
-        await homePage.addPhoneItemToCart();
-        await homePage.assertPhoneItemAddedToCart('Product added');
-        await homePage.addMonitorItemToCart();
-        await homePage.assertMonitorItemAddedToCart('Product added');
-        await homePage.addLaptopItemToCart();
-        await homePage.assertLaptopItemAddedToCart('Product added');
+        // when
+        await homePage.addItemToCart('Phones', 'Samsung galaxy s6');
+        await homePage.assertItemAddedToCart('Product added');
+        await homePage.addItemToCart('Monitors', 'Apple monitor 24');
+        await homePage.assertItemAddedToCart('Product added');
+        await homePage.addItemToCart('Laptops', 'Sony vaio i5');
+        await homePage.assertItemAddedToCart('Product added');
 
-        //then 
+        // then 
         await cartPage.openCart();
         await cartPage.assertCartIsOpened();
-        await cartPage.assertItemsAreInCart();
+        await cartPage.assertItemIsInCart('Samsung galaxy s6');
+        await cartPage.assertItemIsInCart('Apple monitor 24');
+        await cartPage.assertItemIsInCart('Sony vaio i5');
     });
 
     test('Delete item from cart', async ({ page }) => {
-        const homePage = new HomePage(page);
-        const cartPage = new CartPage(page);
-
-        //given
+        // given
         await homePage.assertUserIsLoggedIn();
-
-        //when
         await cartPage.openCart();
         await cartPage.assertCartIsOpened();
 
-        //then 
-        await cartPage.deleteLaptopItem();
-        await cartPage.assertLaptopIsDeletedFromCart();
+        // when
+        await cartPage.deleteItemByName('Sony vaio i5');
+
+        // then 
+        await cartPage.assertItemIsDeletedFromCart('Sony vaio i5');
     });
 
     test('Order items', async ({ page }) => {
-        const homePage = new HomePage(page);
-        const cartPage = new CartPage(page);
-
-        //given
+        // given
         await homePage.assertUserIsLoggedIn();
         await cartPage.openCart();
         await cartPage.assertCartIsOpened();
 
-        //when
+        // when
         await cartPage.openOrderModal();
         await cartPage.fulfillOrderInformation(name, country, city, creditCard, month, year);
         await cartPage.submitOrder();
 
-        //then 
+        // then 
         await cartPage.assertPurchaseIsSuccessful();
         await cartPage.closeSuccessModal();
     });

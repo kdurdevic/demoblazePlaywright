@@ -1,15 +1,8 @@
 import { expect, Locator, Page } from "playwright/test";
-import * as dotenv from 'dotenv';
-dotenv.config();
 
 export class CartPage {
     readonly page: Page;
-    homeLink: Locator;
     cartLink: Locator;
-    phoneItem: Locator;
-    laptopItem: Locator;
-    monitorItem: Locator;
-    deleteLink: Locator;
     placeOrderButton: Locator;
     nameField: Locator;
     countryField: Locator;
@@ -23,12 +16,7 @@ export class CartPage {
 
     constructor(page: Page) {
         this.page = page;
-        this.homeLink = page.getByRole('link', { name: 'Home (current)' });
         this.cartLink = page.getByRole('link', { name: 'Cart', exact: true });
-        this.phoneItem = page.getByRole('cell', { name: 'Sony vaio i5' });
-        this.laptopItem = page.locator('tr', { hasText: 'Apple monitor' });
-        this.monitorItem = page.getByRole('cell', { name: 'Samsung galaxy s6' });
-        this.deleteLink = this.laptopItem.getByRole('link', { name: 'Delete' });
         this.placeOrderButton = page.getByRole('button', { name: 'Place Order' });
         this.nameField = page.getByRole('textbox', { name: 'Total: Name:' });
         this.countryField = page.getByRole('textbox', { name: 'Country:' });
@@ -49,18 +37,19 @@ export class CartPage {
         await expect(this.page).toHaveURL('https://www.demoblaze.com/cart.html');
     }
 
-    public async assertItemsAreInCart() {
-        await expect(this.phoneItem).toBeVisible();
-        await expect(this.laptopItem).toBeVisible();
-        await expect(this.monitorItem).toBeVisible();
+    public async assertItemIsInCart(itemName: string) {
+        const itemLocator = this.page.getByRole('cell', { name: itemName });
+        await expect(itemLocator).toBeVisible();
     }
 
-    public async deleteLaptopItem() {
-        await this.deleteLink.click();
+    public async assertItemIsDeletedFromCart(itemName: string) {
+        const itemLocator = this.page.getByRole('cell', { name: itemName });
+        await expect(itemLocator).toHaveCount(0);
     }
 
-    public async assertLaptopIsDeletedFromCart() {
-        await expect(this.laptopItem).toHaveCount(0);
+    public async deleteItemByName(itemName: string) {
+        const deleteLink = this.page.locator(`tr:has-text("${itemName}") >> text=Delete`);
+        await deleteLink.click();
     }
 
     public async openOrderModal() {

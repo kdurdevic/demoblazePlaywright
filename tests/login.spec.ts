@@ -1,18 +1,16 @@
 import { test } from '@playwright/test';
 import { LoginPage } from '../POMs/login';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 test.use({ storageState: { cookies: [], origins: [] } });
 
+let loginPage: LoginPage;
+
 test.beforeEach(async ({ page }) => {
     await page.goto('/');
+    loginPage = new LoginPage(page);
 });
 
-test('Successful login', async ({ page }) => {
-    const loginPage = new LoginPage(page);
-
+test('Successful login', async () => {
     // given
     await loginPage.assertLoginModalHasOpened();
 
@@ -23,9 +21,7 @@ test('Successful login', async ({ page }) => {
     await loginPage.assertLoginIsSuccessful();
 });
 
-test('Login with nonexisting user', async ({ page }) => {
-    const loginPage = new LoginPage(page);
-
+test('Login with nonexisting user', async () => {
     // given
     await loginPage.assertLoginModalHasOpened();
 
@@ -36,9 +32,7 @@ test('Login with nonexisting user', async ({ page }) => {
     await loginPage.assertDialogForNonExistingUserIsShown('User does not exist.');
 });
 
-test('Login with wrong password', async ({ page }) => {
-    const loginPage = new LoginPage(page);
-
+test('Login with wrong password', async () => {
     // given
     await loginPage.assertLoginModalHasOpened();
 

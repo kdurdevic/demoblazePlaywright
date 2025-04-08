@@ -1,6 +1,4 @@
 import { expect, Locator, Page } from "playwright/test";
-import * as dotenv from 'dotenv';
-dotenv.config();
 
 export class HomePage {
     readonly page: Page;
@@ -8,11 +6,6 @@ export class HomePage {
     welcomeAdminLink: Locator;
     logoutLink: Locator;
     loginLink: Locator;
-    phoneItem: Locator;
-    laptopsFilter: Locator;
-    laptopItem: Locator;
-    monitorsFilter: Locator;
-    monitorItem: Locator;
     addToCartButton: Locator;
 
     constructor(page: Page) {
@@ -21,11 +14,6 @@ export class HomePage {
         this.welcomeAdminLink = page.getByRole('link', { name: 'Welcome admin' });
         this.logoutLink = page.getByRole('link', { name: 'Log out' });
         this.loginLink = page.getByRole('link', { name: 'Log in' });
-        this.phoneItem = page.getByRole('link', { name: 'Samsung galaxy s6' });
-        this.laptopsFilter = page.getByRole('link', { name: 'Laptops' });
-        this.laptopItem = page.getByRole('link', { name: 'Sony vaio i5' });
-        this.monitorsFilter = page.getByRole('link', { name: 'Monitors' });
-        this.monitorItem = page.getByRole('link', { name: 'Apple monitor' });
         this.addToCartButton = page.getByRole('link', { name: 'Add to cart' });
     }
 
@@ -41,43 +29,20 @@ export class HomePage {
         await expect(this.loginLink).toBeVisible();
     }
 
-    public async addPhoneItemToCart() {
-        await this.phoneItem.click();
-        await this.addToCartButton.click();
-    }
-
-    public async assertPhoneItemAddedToCart(expectedMessage: string) {
-        const dialog = await this.page.waitForEvent('dialog');
-        expect(dialog.message()).toContain(expectedMessage);
-        await dialog.accept();
-    }
-
-    public async addLaptopItemToCart() {
+    public async addItemToCart(category: 'Phones' | 'Laptops' | 'Monitors', itemName: string) {
         await this.homeLink.click();
-        await this.laptopsFilter.click();
-        await this.laptopItem.click();
+        const categoryLink = this.page.getByRole('link', { name: category });
+        await categoryLink.click();
+        const item = this.page.getByRole('link', { name: itemName });
+        await item.click();
         await this.addToCartButton.click();
     }
 
-    public async assertLaptopItemAddedToCart(expectedMessage: string) {
+    public async assertItemAddedToCart(expectedMessage: string) {
         const dialog = await this.page.waitForEvent('dialog');
         expect(dialog.message()).toContain(expectedMessage);
         await dialog.accept();
     }
-
-    public async addMonitorItemToCart() {
-        await this.homeLink.click();
-        await this.monitorsFilter.click();
-        await this.monitorItem.click();
-        await this.addToCartButton.click();
-    }
-
-    public async assertMonitorItemAddedToCart(expectedMessage: string) {
-        const dialog = await this.page.waitForEvent('dialog');
-        expect(dialog.message()).toContain(expectedMessage);
-        await dialog.accept();
-    }
-
 }
 
 export default HomePage;

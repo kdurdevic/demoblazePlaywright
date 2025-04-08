@@ -1,19 +1,14 @@
 import { test } from '@playwright/test';
-import dotenv from 'dotenv';
 import { HomePage } from '../POMs/homePage';
-import path from 'path';
 
-dotenv.config();
-
-test.use({ storageState: path.resolve(__dirname, '../playwright/.auth/user.json') });
+let homePage: HomePage;
 
 test.beforeEach(async ({ page }) => {
     await page.goto('/');
+    homePage = new HomePage(page);
 });
 
-test('logout User', async ({ page }) => {
-    const homePage = new HomePage(page);
-
+test('logout User', async () => {
     //given
     await homePage.assertUserIsLoggedIn();
 
