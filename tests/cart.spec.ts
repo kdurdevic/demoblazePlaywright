@@ -1,6 +1,6 @@
 import { test } from '@playwright/test';
-import { HomePage } from '../POMs/homePage';
-import { CartPage } from '../POMs/cartPage';
+import HomePage from '../POMs/homePage';
+import CartPage from '../POMs/cartPage';
 import { city, country, creditCard, month, name, year } from '../utils/order_information';
 
 let homePage: HomePage;
@@ -13,7 +13,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 test.describe.serial('add, delete, order', () => {
-    test('Add items to cart ', async ({ page }) => {
+    test('Add items to cart ', async () => {
         // given
         await homePage.assertUserIsLoggedIn();
 
@@ -33,7 +33,7 @@ test.describe.serial('add, delete, order', () => {
         await cartPage.assertItemIsInCart('Sony vaio i5');
     });
 
-    test('Delete item from cart', async ({ page }) => {
+    test('Delete item from cart', async () => {
         // given
         await homePage.assertUserIsLoggedIn();
         await cartPage.openCart();
@@ -46,7 +46,7 @@ test.describe.serial('add, delete, order', () => {
         await cartPage.assertItemIsDeletedFromCart('Sony vaio i5');
     });
 
-    test('Order items', async ({ page }) => {
+    test('Order items', async () => {
         // given
         await homePage.assertUserIsLoggedIn();
         await cartPage.openCart();

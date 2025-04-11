@@ -17,19 +17,19 @@ export class HomePage {
         this.addToCartButton = page.getByRole('link', { name: 'Add to cart' });
     }
 
-    public async assertUserIsLoggedIn() {
+    async assertUserIsLoggedIn() {
         await expect(this.welcomeAdminLink).toBeVisible();
     }
 
-    public async logoutUser() {
+    async logoutUser() {
         await this.logoutLink.click();
     }
 
-    public async assertUserIsLoggedOut() {
+    async assertUserIsLoggedOut() {
         await expect(this.loginLink).toBeVisible();
     }
 
-    public async addItemToCart(category: 'Phones' | 'Laptops' | 'Monitors', itemName: string) {
+    async addItemToCart(category: 'Phones' | 'Laptops' | 'Monitors', itemName: string) {
         await this.homeLink.click();
         const categoryLink = this.page.getByRole('link', { name: category });
         await categoryLink.click();
@@ -38,11 +38,12 @@ export class HomePage {
         await this.addToCartButton.click();
     }
 
-    public async assertItemAddedToCart(expectedMessage: string) {
+    async assertItemAddedToCart(expectedMessage: string) {
         const dialog = await this.page.waitForEvent('dialog');
         expect(dialog.message()).toContain(expectedMessage);
         await dialog.accept();
     }
+
 }
 
 export default HomePage;

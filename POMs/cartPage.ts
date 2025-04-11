@@ -29,34 +29,34 @@ export class CartPage {
         this.successMessage = page.getByRole('heading', { name: 'Thank you for your purchase!' });
     }
 
-    public async openCart() {
+    async openCart() {
         await this.cartLink.click();
     }
 
-    public async assertCartIsOpened() {
+    async assertCartIsOpened() {
         await expect(this.page).toHaveURL('https://www.demoblaze.com/cart.html');
     }
 
-    public async assertItemIsInCart(itemName: string) {
-        const itemLocator = this.page.getByRole('cell', { name: itemName });
+    async assertItemIsInCart(itemName: string) {
+        const itemLocator = this.page.locator('td', { hasText: itemName });
         await expect(itemLocator).toBeVisible();
     }
 
-    public async assertItemIsDeletedFromCart(itemName: string) {
-        const itemLocator = this.page.getByRole('cell', { name: itemName });
-        await expect(itemLocator).toHaveCount(0);
-    }
-
-    public async deleteItem(itemName: string) {
+    async deleteItem(itemName: string) {
         const deleteLink = this.page.locator(`tr:has-text("${itemName}") >> text=Delete`);
         await deleteLink.click();
     }
 
-    public async openOrderModal() {
+    async assertItemIsDeletedFromCart(itemName: string) {
+        const itemLocator = this.page.locator('td', { hasText: itemName });
+        await expect(itemLocator).toHaveCount(0);
+    }
+
+    async openOrderModal() {
         await this.placeOrderButton.click();
     }
 
-    public async fulfillOrderInformation(name: string, country: string, city: string, creditCard: string, month: string, year: string) {
+    async fulfillOrderInformation(name: string, country: string, city: string, creditCard: string, month: string, year: string) {
         await this.nameField.fill(name);
         await this.countryField.fill(country);
         await this.cityField.fill(city);
@@ -65,17 +65,18 @@ export class CartPage {
         await this.yearField.fill(year);
     }
 
-    public async submitOrder() {
+    async submitOrder() {
         await this.purchaseButton.click();
     }
 
-    public async assertPurchaseIsSuccessful() {
+    async assertPurchaseIsSuccessful() {
         await expect(this.successMessage).toHaveText("Thank you for your purchase!");
     }
 
-    public async closeSuccessModal() {
+    async closeSuccessModal() {
         await this.okButton.click();
     }
+
 }
 
 export default CartPage;
