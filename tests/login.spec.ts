@@ -1,5 +1,5 @@
 import { test } from '@playwright/test';
-import { LoginPage } from '../POMs/login';
+import LoginPage from '../POMs/login';
 
 test.use({ storageState: { cookies: [], origins: [] } });
 

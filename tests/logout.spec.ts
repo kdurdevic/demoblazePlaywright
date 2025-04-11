@@ -1,5 +1,5 @@
 import { test } from '@playwright/test';
-import { HomePage } from '../POMs/homePage';
+import HomePage from '../POMs/homePage';
 
 let homePage: HomePage;
 
@@ -17,5 +17,4 @@ test('logout User', async () => {
 
     //then 
     await homePage.assertUserIsLoggedOut();
-
 });

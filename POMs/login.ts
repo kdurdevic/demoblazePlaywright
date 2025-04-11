@@ -1,6 +1,4 @@
 import { expect, Locator, Page } from "playwright/test";
-import * as dotenv from 'dotenv';
-dotenv.config();
 
 export class LoginPage {
     readonly page: Page;
@@ -21,45 +19,44 @@ export class LoginPage {
         this.welcomeAdminLink = page.getByRole('link', { name: 'Welcome admin' });
     }
 
-    public async assertLoginModalHasOpened() {
+    async assertLoginModalHasOpened() {
         await this.loginLink.click();
         await expect(this.loginModal).toBeVisible();
     }
 
-    public async loginWithValidCredentials() {
+    async loginWithValidCredentials() {
         await this.usernameField.fill(process.env.VALID_USERNAME || '');
         await this.passwordField.fill(process.env.VALID_PASSWORD || '');
         await this.loginButton.click()
     }
 
-    public async assertLoginIsSuccessful() {
+    async assertLoginIsSuccessful() {
         await expect(this.welcomeAdminLink).toBeVisible();
     }
 
-    public async loginWithNonExistingUser() {
+    async loginWithNonExistingUser() {
         await this.usernameField.fill(process.env.INVALID_USERNAME || '');
         await this.passwordField.fill(process.env.INVALID_PASSWORD || '');
         await this.loginButton.click()
     }
 
-    public async assertDialogForNonExistingUserIsShown(expectedMessage: string) {
+    async assertDialogForNonExistingUserIsShown(expectedMessage: string) {
         const dialog = await this.page.waitForEvent('dialog');
         expect(dialog.message()).toContain(expectedMessage);
         await dialog.accept();
     }
 
-    public async loginWithWrongPassword() {
+    async loginWithWrongPassword() {
         await this.usernameField.fill(process.env.VALID_USERNAME || '');
         await this.passwordField.fill(process.env.INVALID_PASSWORD || '');
         await this.loginButton.click()
     }
 
-    public async assertDialogForWrongPasswordIsShown(expectedMessage: string) {
+    async assertDialogForWrongPasswordIsShown(expectedMessage: string) {
         const dialog = await this.page.waitForEvent('dialog');
         expect(dialog.message()).toContain(expectedMessage);
         await dialog.accept();
     }
-
 }
 
 export default LoginPage;

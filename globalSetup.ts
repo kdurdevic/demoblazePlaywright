@@ -1,6 +1,6 @@
 import path from 'path';
 import { chromium } from '@playwright/test';
-import { LoginPage } from './POMs/login';
+import LoginPage from './POMs/login';
 
 const authFileDir = path.join(__dirname, 'playwright/.auth');
 const authFile = path.join(authFileDir, 'user.json');
