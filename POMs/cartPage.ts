@@ -18,7 +18,7 @@ export class CartPage {
         this.page = page;
         this.cartLink = page.getByRole('link', { name: 'Cart', exact: true });
         this.placeOrderButton = page.getByRole('button', { name: 'Place Order' });
-        this.nameField = page.getByRole('textbox', { name: 'Total: Name:' });
+        this.nameField = page.getByText('Name:', { exact: true });
         this.countryField = page.getByRole('textbox', { name: 'Country:' });
         this.cityField = page.getByRole('textbox', { name: 'City:' });
         this.creditCardField = page.getByRole('textbox', { name: 'Credit card:' });
