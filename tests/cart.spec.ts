@@ -10,24 +10,24 @@ test.beforeEach(async ({ page }) => {
     await page.goto('/');
     homePage = new HomePage(page);
     cartPage = new CartPage(page);
+    await homePage.assertUserIsLoggedIn();
 });
 
 test('Add item to cart', async () => {
     // given
-    await homePage.assertUserIsLoggedIn();
-
-    // when
     await homePage.addItemToCart('Phones', 'Samsung galaxy s6');
     await homePage.assertItemAddedToCart('Product added');
 
-    // then 
+    // when
     await cartPage.openCart();
     await cartPage.assertCartIsOpened();
+
+    // then 
+    await cartPage.assertItemIsInCart('Samsung galaxy s6');
 });
 
 test('Delete item from cart', async () => {
     // given
-    await homePage.assertUserIsLoggedIn();
     await homePage.addItemToCart('Laptops', 'Sony vaio i5');
     await homePage.assertItemAddedToCart('Product added');
 
@@ -42,7 +42,8 @@ test('Delete item from cart', async () => {
 
 test('Order items', async () => {
     // given
-    await homePage.assertUserIsLoggedIn();
+    await homePage.addItemToCart('Monitors', 'Apple monitor 24');
+    await homePage.assertItemAddedToCart('Product added');
     await cartPage.openCart();
     await cartPage.assertCartIsOpened();
 
@@ -52,6 +53,6 @@ test('Order items', async () => {
     await cartPage.submitOrder();
 
     // then 
-    await cartPage.assertPurchaseIsSuccessful();
+    await cartPage.assertOrderIsSuccessful();
     await cartPage.closeSuccessModal();
 });

@@ -38,8 +38,8 @@ export class CartPage {
     }
 
     async assertItemIsInCart(itemName: string) {
-        const itemLocator = this.page.locator('td', { hasText: itemName });
-        await expect(itemLocator).toBeVisible();
+        const row = this.page.locator('tr', { hasText: itemName });
+        await expect(row).toBeVisible();
     }
 
     async deleteItem(itemName: string) {
@@ -69,7 +69,7 @@ export class CartPage {
         await this.purchaseButton.click();
     }
 
-    async assertPurchaseIsSuccessful() {
+    async assertOrderIsSuccessful() {
         await expect(this.successMessage).toHaveText("Thank you for your purchase!");
     }
 
