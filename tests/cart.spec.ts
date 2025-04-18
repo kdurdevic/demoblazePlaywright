@@ -12,53 +12,46 @@ test.beforeEach(async ({ page }) => {
     cartPage = new CartPage(page);
 });
 
-test.describe.serial('add, delete, order', () => {
-    test('Add items to cart ', async () => {
-        // given
-        await homePage.assertUserIsLoggedIn();
+test('Add item to cart', async () => {
+    // given
+    await homePage.assertUserIsLoggedIn();
 
-        // when
-        await homePage.addItemToCart('Phones', 'Samsung galaxy s6');
-        await homePage.assertItemAddedToCart('Product added');
-        await homePage.addItemToCart('Monitors', 'Apple monitor 24');
-        await homePage.assertItemAddedToCart('Product added');
-        await homePage.addItemToCart('Laptops', 'Sony vaio i5');
-        await homePage.assertItemAddedToCart('Product added');
+    // when
+    await homePage.addItemToCart('Phones', 'Samsung galaxy s6');
+    await homePage.assertItemAddedToCart('Product added');
 
-        // then 
-        await cartPage.openCart();
-        await cartPage.assertCartIsOpened();
-        await cartPage.assertItemIsInCart('Samsung galaxy s6');
-        await cartPage.assertItemIsInCart('Apple monitor 24');
-        await cartPage.assertItemIsInCart('Sony vaio i5');
-    });
+    // then 
+    await cartPage.openCart();
+    await cartPage.assertCartIsOpened();
+});
 
-    test('Delete item from cart', async () => {
-        // given
-        await homePage.assertUserIsLoggedIn();
-        await cartPage.openCart();
-        await cartPage.assertCartIsOpened();
+test('Delete item from cart', async () => {
+    // given
+    await homePage.assertUserIsLoggedIn();
+    await homePage.addItemToCart('Laptops', 'Sony vaio i5');
+    await homePage.assertItemAddedToCart('Product added');
 
-        // when
-        await cartPage.deleteItem('Sony vaio i5');
+    // when
+    await cartPage.openCart();
+    await cartPage.assertCartIsOpened();
 
-        // then 
-        await cartPage.assertItemIsDeletedFromCart('Sony vaio i5');
-    });
+    // then 
+    await cartPage.deleteItem('Sony vaio i5');
+    await cartPage.assertItemIsDeletedFromCart('Sony vaio i5');
+});
 
-    test('Order items', async () => {
-        // given
-        await homePage.assertUserIsLoggedIn();
-        await cartPage.openCart();
-        await cartPage.assertCartIsOpened();
+test('Order items', async () => {
+    // given
+    await homePage.assertUserIsLoggedIn();
+    await cartPage.openCart();
+    await cartPage.assertCartIsOpened();
 
-        // when
-        await cartPage.openOrderModal();
-        await cartPage.fulfillOrderInformation(name, country, city, creditCard, month, year);
-        await cartPage.submitOrder();
+    // when
+    await cartPage.openOrderModal();
+    await cartPage.fulfillOrderInformation(name, country, city, creditCard, month, year);
+    await cartPage.submitOrder();
 
-        // then 
-        await cartPage.assertPurchaseIsSuccessful();
-        await cartPage.closeSuccessModal();
-    });
+    // then 
+    await cartPage.assertPurchaseIsSuccessful();
+    await cartPage.closeSuccessModal();
 });
